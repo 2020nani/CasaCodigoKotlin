@@ -1,6 +1,6 @@
 package com.example.api.validacoescustomizada
 
-import com.example.api.cadastracategoria.CategoriaRepository
+import com.example.api.cadastralivro.LivroRepository
 import io.micronaut.core.annotation.AnnotationValue
 import io.micronaut.validation.validator.constraints.ConstraintValidator
 import io.micronaut.validation.validator.constraints.ConstraintValidatorContext
@@ -9,32 +9,31 @@ import javax.validation.Constraint
 import javax.validation.Payload
 import kotlin.reflect.KClass
 
-
 @MustBeDocumented
 @Target(AnnotationTarget.CONSTRUCTOR, AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [CategoriaUnicaValidator::class])
-annotation class CategoriaUnica(
-    val message: String = "Ja existe uma categoria cadastrado com este nome",
+@Constraint(validatedBy = [IsbnUnicoValidator::class])
+annotation class IsbnUnico(
+    val message: String = "Ja existe um livro cadastrado com este isbn",
     val groups: Array<KClass<Any>> = [],
     val payload: Array<KClass<Payload>> = []
 
 )
 
 @Singleton
-class CategoriaUnicaValidator(
-    val categoriaRepository: CategoriaRepository
-) : ConstraintValidator<CategoriaUnica, String> {
+class IsbnUnicoValidator(
+    val livroRepository: LivroRepository
+) : ConstraintValidator<IsbnUnico, String> {
 
     override fun isValid(
         value: String?,
-        annotationMetadata: AnnotationValue<CategoriaUnica>,
+        annotationMetadata: AnnotationValue<IsbnUnico>,
         context: ConstraintValidatorContext
     ): Boolean {
 
         if(value == null) return true
 
-        if(categoriaRepository.existsByNome(value)){
+        if(livroRepository.existsByIsbn(value)){
             return false
         }
         return true

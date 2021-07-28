@@ -21,4 +21,5 @@ class Categoria (
     @CreationTimestamp
     var criadoEm: LocalDate? = null
 
+
 }

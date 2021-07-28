@@ -13,8 +13,8 @@ import kotlin.reflect.KClass
 @MustBeDocumented
 @Target(AnnotationTarget.CONSTRUCTOR, AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [CategoriaUnicaValidator::class])
-annotation class CategoriaUnica(
+@Constraint(validatedBy = [ExisteCategoriaValidator::class])
+annotation class ExisteCategoria(
     val message: String = "Ja existe uma categoria cadastrado com este nome",
     val groups: Array<KClass<Any>> = [],
     val payload: Array<KClass<Payload>> = []
@@ -22,22 +22,22 @@ annotation class CategoriaUnica(
 )
 
 @Singleton
-class CategoriaUnicaValidator(
+class ExisteCategoriaValidator(
     val categoriaRepository: CategoriaRepository
-) : ConstraintValidator<CategoriaUnica, String> {
+) : ConstraintValidator<ExisteCategoria, Long> {
 
     override fun isValid(
-        value: String?,
-        annotationMetadata: AnnotationValue<CategoriaUnica>,
+        value: Long?,
+        annotationMetadata: AnnotationValue<ExisteCategoria>,
         context: ConstraintValidatorContext
     ): Boolean {
 
-        if(value == null) return true
+        if(value == null) return false
 
-        if(categoriaRepository.existsByNome(value)){
-            return false
+        if(categoriaRepository.existsById(value)){
+            return true
         }
-        return true
+        return false
     }
 
 }

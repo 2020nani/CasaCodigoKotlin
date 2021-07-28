@@ -5,11 +5,15 @@ import io.micronaut.core.annotation.Introspected
 import javax.validation.constraints.NotBlank
 
 @Introspected
-class CategoriaForm (
+class CategoriaForm(
     @field:NotBlank
     @field:CategoriaUnica
     val nome: String
-        )
+) {
+    fun converte(): Categoria {
+        return Categoria(nome)
+    }
+}
 /*
  nome é obrigatório
 O nome não pode ser duplicado
