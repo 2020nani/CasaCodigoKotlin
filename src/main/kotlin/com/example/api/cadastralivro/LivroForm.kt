@@ -6,11 +6,10 @@ import com.example.api.validacoescustomizada.ExisteCategoria
 import com.example.api.validacoescustomizada.ExisteAutor
 import com.example.api.validacoescustomizada.IsbnUnico
 import com.example.api.validacoescustomizada.TituloUnico
+import com.fasterxml.jackson.annotation.JsonFormat
 import io.micronaut.core.annotation.Introspected
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import java.time.LocalDate
+import javax.validation.constraints.*
 
 @Introspected
 class LivroForm(
@@ -30,6 +29,10 @@ class LivroForm(
     @field:NotBlank
     @field:IsbnUnico
     val isbn: String,
+    @field:Future
+    @field:NotNull
+    @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    val dataPublicacao: LocalDate,
     @field:NotNull
     @field:ExisteCategoria
     val categoriaId: Long,
@@ -41,7 +44,7 @@ class LivroForm(
     fun converte(autorRepository: AutorRepository, categoriaRepository: CategoriaRepository): Livro {
         val autor = autorRepository.findById(autorId).get()
         val categoria = categoriaRepository.findById(categoriaId).get()
-        return Livro(titulo,resumo,sumario,preco,paginas,isbn,categoria,autor)
+        return Livro(titulo,resumo,sumario,preco,paginas,isbn,dataPublicacao,categoria,autor)
     }
 
 }

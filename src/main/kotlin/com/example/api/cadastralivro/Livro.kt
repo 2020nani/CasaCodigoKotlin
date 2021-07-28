@@ -2,13 +2,11 @@ package com.example.api.cadastralivro
 
 import com.example.api.cadastraautor.Autor
 import com.example.api.cadastracategoria.Categoria
+import com.fasterxml.jackson.annotation.JsonFormat
 import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDate
 import javax.persistence.*
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import javax.validation.constraints.*
 
 @Entity
 class Livro(
@@ -26,6 +24,10 @@ class Livro(
     val paginas: Int,
     @field:NotBlank
     val isbn: String,
+    @field:Future
+    @field:NotNull
+    @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    val dataPublicacao: LocalDate,
     @field:NotNull
     @field:OneToOne
     val categoria: Categoria,

@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [ExisteAutorValidator::class])
 annotation class ExisteAutor(
-    val message: String = "Nao existe um livro cadastrado com este id",
+    val message: String = "Nao existe um autor cadastrado com este id",
     val groups: Array<KClass<Any>> = [],
     val payload: Array<KClass<Payload>> = []
 
